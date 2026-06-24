@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>RatGen – Create with AI</title>
+
+  <style>
+    body {
+      background: #0a0a0a;
+      color: #ffd700;
+      font-family: Arial, Helvetica, sans-serif;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      letter-spacing: 2px;
+    }
+
+    a.button {
+      background: #ffd700;
+      color: #0a0a0a;
+      padding: 0.9rem 1.7rem;
+      border-radius: 0.4rem;
+      text-decoration: none;
+      font-weight: bold;
+      display: inline-block;
+      margin: 1rem 0;
+      transition: 0.2s;
+    }
+
+    a.button:hover {
+      background: #fff2a8;
+      transform: scale(1.05);
+    }
+
+    textarea {
+      width: 80%;
+      max-width: 550px;
+      padding: 0.7rem;
+      margin: 0.5rem 0;
+      border: 2px solid #ffd700;
+      background: #111;
+      color: #ffd700;
+      border-radius: 0.4rem;
+      font-size: 1rem;
+    }
+
+    #result img {
+      max-width: 90%;
+      margin-top: 1.5rem;
+      border: 4px solid #ffd700;
+      border-radius: 0.5rem;
+      box-shadow: 0 0 20px #ffd70055;
+    }
+
+    #loading {
+      display: none;
+      margin-top: 1rem;
+      font-size: 1.2rem;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>RatGen</h1>
+
+  <a id="authBtn" class="button" href="#">Connect Your Pollenations Account</a>
+
+  <div id="promptSection" style="display:none;">
+    <textarea id="prompt" rows="2" placeholder="Describe the image you want…"></textarea><br>
+    <a id="generateBtn" class="button" href="#">Generate Image</a>
+    <div id="loading">Generating… please wait</div>
+  </div>
+
+  <div id="result"></div>
+
+<script>
+  const CLIENT_ID = "pk_3nQsoQyCywMClyjt";
+
+  // IMPORTANT: Replace with your GitHub Pages URL
+  const REDIRECT_URI = "https://JustARandomRat3.github.io/RatGen2/";
+
+  // IMPORTANT: Replace with your Worker URL
+  const WORKER_URL = "https://my-first-worker.justarandomrat3.workers.dev/";
+
+  const authUrl = new URL("https://enter.pollinations.ai/authorize");
+  authUrl.searchParams.set("redirect_uri", REDIRECT_URI);
+  authUrl.searchParams.set("client_id", CLIENT_ID);
+
+  document.getElementById("authBtn").addEventListener("click", e => {
+    e.preventDefault();
+    location.href = authUrl.toString();
+  });
+
+  const frag = new URLSearchParams(location.hash.slice(1));
+  const userKey = frag.get("api_key");
+
+  if (userKey) {
+    document.getElementById("authBtn").style.display = "none";
+    document.getElementById("promptSection").style.display = "block";
+  }
+
+  document.getElementById("generateBtn").addEventListener("click", async e => {
+    e.preventDefault();
+
+    const prompt = document.getElementById("prompt").value.trim();
+    if (!prompt) return alert("Please enter a description.");
+
+    document.getElementById("loading").style.display = "block";
+    document.getElementById("result").innerHTML = "";
+
+    try {
+      const resp = await fetch(WORKER_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          key: userKey,
+          prompt: prompt
+        })
+      });
+
+      const data = await resp.json();
+      console.log(data);
+
+      if (data?.output?.[0]?.image) {
+        document.getElementById("result").innerHTML =
+          `<img src="${data.output[0].image}" alt="Generated image">`;
+      } else {
+        alert("Generation failed – check console.");
+      }
+
+    } catch (err) {
+      alert("Network error – check console.");
+      console.error(err);
+    }
+
+    document.getElementById("loading").style.display = "none";
+  });
+</script>
+
+</body>
+</html>
