@@ -85,7 +85,7 @@
   const REDIRECT_URI = "https://justarandomrat3.github.io/RatGen2/";
 
   // Your Worker URL
-  const WORKER_URL = "https://my-first-worker.justarandomrat3.workers.dev";
+  const WORKER_URL = "https://my-first-worker.justarandomrat3.workers.dev/";
 
   const authUrl = new URL("https://enter.pollinations.ai/authorize", window.location.origin);
   authUrl.searchParams.set("redirect_uri", REDIRECT_URI);
@@ -146,7 +146,7 @@
 
     } catch (err) {
       alert("Network error – check console.");
-      //console.error(err);
+      console.error(err);
     }
 
     document.getElementById("loading").style.display = "none";
