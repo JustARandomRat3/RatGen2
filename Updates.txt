@@ -1,0 +1,172 @@
+Commits on Oct 22, 2026
+
+    The code is still fckd up and probably will stay that way for a while
+    JustARandomRat3
+    JustARandomRat3
+    authored
+    1 minute ago
+    ·
+    Verified
+    Add initial README
+    JustARandomRat3
+    JustARandomRat3
+    authored
+    4 minutes ago
+    ·
+    Verified
+    Fixing my fckd up code
+    JustARandomRat3
+    JustARandomRat3
+    authored
+    6 minutes ago
+    ·
+    Verified
+    Implement prompt history feature
+    JustARandomRat3
+    JustARandomRat3
+    authored
+    3 hours ago
+    ·
+    Verified
+    Change model in image URL for fetching
+    JustARandomRat3
+    JustARandomRat3
+    authored
+    3 hours ago
+    ·
+    Verified
+    Fix image URL construction in index.html
+    JustARandomRat3
+    JustARandomRat3
+    authored
+    4 hours ago
+    ·
+    Verified
+    Adding back the html cus i accidently deleted it lol
+    JustARandomRat3
+    JustARandomRat3
+    authored
+    4 hours ago
+    ·
+    Verified
+    Add logging for API key and its length for testing
+    JustARandomRat3
+    JustARandomRat3
+    authored
+    4 hours ago
+    ·
+    Verified
+    Fixing the stuff to work?
+    JustARandomRat3
+    JustARandomRat3
+    authored
+    5 hours ago
+    ·
+    Verified
+
+Commits on Jun 25, 2026
+
+    Update index.html
+    JustARandomRat3
+    JustARandomRat3
+    authored
+    on Jun 25
+    Verified
+    Update index.html
+    JustARandomRat3
+    JustARandomRat3
+    authored
+    on Jun 25
+    ·
+    Verified
+    Add files via upload
+    JustARandomRat3
+    JustARandomRat3
+    authored
+    on Jun 25
+    Verified
+    Delete index.html
+    JustARandomRat3
+    JustARandomRat3
+    authored
+    on Jun 25
+    ·
+    Verified
+    Add files via upload
+    JustARandomRat3
+    JustARandomRat3
+    authored
+    on Jun 25
+    ·
+    Verified
+    Delete index.html
+    JustARandomRat3
+    JustARandomRat3
+    authored
+    on Jun 25
+    Verified
+    Add files via upload
+    JustARandomRat3
+    JustARandomRat3
+    authored
+    on Jun 25
+    ·
+    Verified
+    Delete index.html
+    JustARandomRat3
+    JustARandomRat3
+    authored
+    on Jun 25
+    ·
+    Verified
+    Add files via upload
+    JustARandomRat3
+    JustARandomRat3
+    authored
+    on Jun 25
+    ·
+    Verified
+    Delete index.html
+    JustARandomRat3
+    JustARandomRat3
+    authored
+    on Jun 25
+    ·
+    Verified
+
+Commits on Jun 24, 2026
+
+    fixed index.html?
+    JustARandomRat3
+    JustARandomRat3
+    authored
+    on Jun 24
+    ·
+    Verified
+    Delete index.html
+    JustARandomRat3
+    JustARandomRat3
+    authored
+    on Jun 24
+    ·
+    Verified
+    fixed index.html
+    JustARandomRat3
+    JustARandomRat3
+    authored
+    on Jun 24
+    ·
+    Verified
+    Delete index.html
+    JustARandomRat3
+    JustARandomRat3
+    authored
+    on Jun 24
+    ·
+    Verified
+    Add files via upload
+    JustARandomRat3
+    JustARandomRat3
+    authored
+    on Jun 24
+    ·
