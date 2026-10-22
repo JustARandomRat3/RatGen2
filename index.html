@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>RatGen – Create with AI</title>
+  <title>RatGen, Just generate the image already</title>
 
   <style>
     body {
       background: #0a0a0a;
-      color: #ffd700;
+      color: #bfa06a;
       font-family: Arial, Helvetica, sans-serif;
       text-align: center;
       padding: 2rem;
@@ -21,7 +21,7 @@
     }
 
     a.button {
-      background: #ffd700;
+      background: #bfa06a;
       color: #0a0a0a;
       padding: 0.9rem 1.7rem;
       border-radius: 0.4rem;
@@ -42,9 +42,9 @@
       max-width: 550px;
       padding: 0.7rem;
       margin: 0.5rem 0;
-      border: 2px solid #ffd700;
+      border: 2px solid #bfa06a;
       background: #111;
-      color: #ffd700;
+      color: #bfa06a;
       border-radius: 0.4rem;
       font-size: 1rem;
     }
@@ -52,7 +52,7 @@
     #result img {
       max-width: 90%;
       margin-top: 1.5rem;
-      border: 4px solid #ffd700;
+      border: 4px solid #bfa06a;
       border-radius: 0.5rem;
       box-shadow: 0 0 20px #ffd70055;
     }
@@ -82,12 +82,6 @@
     <a id="generateBtn" class="button" href="#">Generate Image</a>
     <div id="loading">Generating… please wait</div>
   </div>
-  <div id="historySection">
-  <h2>Recent prompts</h2>
-  <ul id="history"></ul>
-  <button id="clearHistory" type="button">Clear history</button>
-</div>
-
 
   <div id="result"></div>
 
@@ -105,50 +99,53 @@
     const loading = document.getElementById("loading");
     const result = document.getElementById("result");
     const historyList = document.getElementById("history");
-const clearHistoryBtn = document.getElementById("clearHistory");
-const HISTORY_KEY = "ratgen-prompt-history";
-const MAX_HISTORY = 20;
+    const clearHistoryBtn = document.getElementById("clearHistory");
 
-function getHistory() {
-  try {
-    return JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]");
-  } catch {
-    return [];
-  }
-}
+    const HISTORY_KEY = "ratgen-prompt-history";
+    const MAX_HISTORY = 20;
 
-function renderHistory() {
-  historyList.replaceChildren();
+    function getHistory() {
+      try {
+        return JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]");
+      } catch {
+        return [];
+      }
+    }
 
-  for (const promptText of getHistory()) {
-    const item = document.createElement("li");
-    const button = document.createElement("button");
+    function renderHistory() {
+      historyList.replaceChildren();
 
-    button.type = "button";
-    button.textContent = promptText;
-    button.addEventListener("click", () => {
-      document.getElementById("prompt").value = promptText;
+      for (const promptText of getHistory()) {
+        const item = document.createElement("li");
+        const button = document.createElement("button");
+
+        button.type = "button";
+        button.textContent = promptText;
+        button.addEventListener("click", () => {
+          document.getElementById("prompt").value = promptText;
+        });
+
+        item.appendChild(button);
+        historyList.appendChild(item);
+      }
+    }
+
+    function savePrompt(promptText) {
+      const history = getHistory().filter(item => item !== promptText);
+      history.unshift(promptText);
+      localStorage.setItem(
+        HISTORY_KEY,
+        JSON.stringify(history.slice(0, MAX_HISTORY))
+      );
+      renderHistory();
+    }
+
+    clearHistoryBtn.addEventListener("click", () => {
+      localStorage.removeItem(HISTORY_KEY);
+      renderHistory();
     });
 
-    item.appendChild(button);
-    historyList.appendChild(item);
-  }
-}
-
-function savePrompt(promptText) {
-  const history = getHistory().filter(item => item !== promptText);
-  history.unshift(promptText);
-  localStorage.setItem(HISTORY_KEY, JSON.stringify(history.slice(0, MAX_HISTORY)));
-  renderHistory();
-}
-
-clearHistoryBtn.addEventListener("click", () => {
-  localStorage.removeItem(HISTORY_KEY);
-  renderHistory();
-});
-
-renderHistory();
-
+    renderHistory();
 
     authBtn.href = authUrl.toString();
 
@@ -156,7 +153,7 @@ renderHistory();
     const params = new URLSearchParams(window.location.hash.slice(1));
     const userKey = params.get("api_key");
 
-    // These diagnostics show whether a key was received, but never print it.
+    // Confirm whether a key was received without printing the key itself.
     console.log("API key received:", Boolean(userKey));
     console.log("Key length:", userKey?.length ?? 0);
 
@@ -183,25 +180,20 @@ renderHistory();
       const prompt = document.getElementById("prompt").value.trim();
 
       if (!prompt) {
-  alert("Please enter a description.");
-  return;
-}
-
-savePrompt(prompt);
-loading.style.display = "block";
-
+        alert("Please enter a description.");
+        return;
       }
 
+      savePrompt(prompt);
       loading.style.display = "block";
       result.replaceChildren();
 
       try {
         const imageUrl =
-        "https://gen.pollinations.ai/image/" +
-        encodeURIComponent(prompt) +
-        "?model=" +
-        encodeURIComponent("lykon/dreamshaper-8-lcm");
-
+          "https://gen.pollinations.ai/image/" +
+          encodeURIComponent(prompt) +
+          "?model=" +
+          encodeURIComponent("lykon/dreamshaper-8-lcm");
 
         const response = await fetch(imageUrl, {
           headers: {
@@ -211,11 +203,7 @@ loading.style.display = "block";
 
         if (!response.ok) {
           const details = await response.text();
-          console.error(
-            "Pollinations error:",
-            response.status,
-            details
-          );
+          console.error("Pollinations error:", response.status, details);
           throw new Error(`Pollinations returned HTTP ${response.status}`);
         }
 
@@ -236,3 +224,4 @@ loading.style.display = "block";
   </script>
 </body>
 </html>
+
