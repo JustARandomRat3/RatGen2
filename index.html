@@ -141,7 +141,11 @@
 
       try {
         const imageUrl =
-          "https://gen.pollinations.ai/image/" + encodeURIComponent(prompt);
+        "https://gen.pollinations.ai/image/" +
+        encodeURIComponent(prompt) +
+        "?model=" +
+        encodeURIComponent("black-forest-labs/flux.1-schnell");
+
 
         const response = await fetch(imageUrl, {
           headers: {
