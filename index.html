@@ -18,6 +18,10 @@
   const params = new URLSearchParams(window.location.hash.slice(1));
   const userKey = params.get("api_key");
 
+  console.log("API key received:", Boolean(userKey));
+  console.log("Key length:", userKey?.length ?? 0);
+
+
   if (userKey) {
     authBtn.style.display = "none";
     promptSection.style.display = "block";
