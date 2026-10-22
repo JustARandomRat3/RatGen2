@@ -82,6 +82,12 @@
     <a id="generateBtn" class="button" href="#">Generate Image</a>
     <div id="loading">Generating… please wait</div>
   </div>
+  <div id="historySection">
+  <h2>Recent prompts</h2>
+  <ul id="history"></ul>
+  <button id="clearHistory" type="button">Clear history</button>
+</div>
+
 
   <div id="result"></div>
 
@@ -98,6 +104,51 @@
     const generateBtn = document.getElementById("generateBtn");
     const loading = document.getElementById("loading");
     const result = document.getElementById("result");
+    const historyList = document.getElementById("history");
+const clearHistoryBtn = document.getElementById("clearHistory");
+const HISTORY_KEY = "ratgen-prompt-history";
+const MAX_HISTORY = 20;
+
+function getHistory() {
+  try {
+    return JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]");
+  } catch {
+    return [];
+  }
+}
+
+function renderHistory() {
+  historyList.replaceChildren();
+
+  for (const promptText of getHistory()) {
+    const item = document.createElement("li");
+    const button = document.createElement("button");
+
+    button.type = "button";
+    button.textContent = promptText;
+    button.addEventListener("click", () => {
+      document.getElementById("prompt").value = promptText;
+    });
+
+    item.appendChild(button);
+    historyList.appendChild(item);
+  }
+}
+
+function savePrompt(promptText) {
+  const history = getHistory().filter(item => item !== promptText);
+  history.unshift(promptText);
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(history.slice(0, MAX_HISTORY)));
+  renderHistory();
+}
+
+clearHistoryBtn.addEventListener("click", () => {
+  localStorage.removeItem(HISTORY_KEY);
+  renderHistory();
+});
+
+renderHistory();
+
 
     authBtn.href = authUrl.toString();
 
@@ -132,8 +183,13 @@
       const prompt = document.getElementById("prompt").value.trim();
 
       if (!prompt) {
-        alert("Please enter a description.");
-        return;
+  alert("Please enter a description.");
+  return;
+}
+
+savePrompt(prompt);
+loading.style.display = "block";
+
       }
 
       loading.style.display = "block";
