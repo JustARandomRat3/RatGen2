@@ -1,255 +1,150 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>RatGen, Just generate the image already</title>
-
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Rat Gen</title>
   <style>
-    body {
-      background: #0a0a0a;
-      color: #bfa06a;
-      font-family: Arial, Helvetica, sans-serif;
-      text-align: center;
-      padding: 2rem;
+    :root{
+      --bg:#0f0f12; --panel:#161617; --accent:#bfa06a; --muted:#9a988f;
+      --shadow: 0 8px 30px rgba(0,0,0,0.6); --radius:12px;
+      font-family: "Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue", Arial;
     }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(191,160,106,0.03), transparent 6%),
+        linear-gradient(180deg,#0b0b0d,#111113 60%);
+      color:#e6e3df; min-height:100vh;padding:28px 18px;
+    }
+    .wrap{max-width:980px;margin:0 auto}
+    header{display:flex;gap:18px;align-items:center;margin-bottom:20px}
+    .avatar{width:110px;height:110px;border-radius:16px;overflow:hidden;flex:0 0 110px;
+      background:linear-gradient(180deg,#141414,#1b1b1b);box-shadow:var(--shadow);display:flex;
+      align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.04);}
+    .avatar img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(10%) contrast(0.95)}
+    .title h1{margin:0;font-size:1.4rem;color:var(--accent)}
+    .title p{margin:6px 0 0;color:var(--muted)}
+    .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .tag{background:rgba(191,160,106,0.08);color:var(--muted);padding:6px 10px;border-radius:999px;font-size:0.84rem;border:1px solid rgba(191,160,106,0.06)}
+    .controls{margin-left:auto;display:flex;gap:8px;align-items:center}
+    .btn{background:transparent;color:var(--accent);border:1px solid rgba(191,160,106,0.12);padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:600}
+    main{display:grid;grid-template-columns:1fr 320px;gap:20px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:16px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.03)}
+    .bio{line-height:1.5;color:#e8e6e2}
+    .section{margin-bottom:16px}
+    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    .fact{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);color:var(--muted)}
+    .fav-list{list-style:none;padding:0;margin:0}
+    .fav-list li{padding:8px 0;border-bottom:1px dashed rgba(255,255,255,0.03);display:flex;justify-content:space-between;align-items:center;color:var(--muted)}
+    input[type="text"],textarea{width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);margin-top:6px;background:transparent;color:inherit}
+    footer{margin-top:22px;text-align:center;color:var(--muted);font-size:0.85rem}
+    .accent-small{color:var(--accent);font-weight:700}
+    .video-list{display:flex;flex-direction:column;gap:12px}
+    .video-item iframe{width:100%;height:200px;border:0;border-radius:8px}
+    @media (max-width:880px){ main{grid-template-columns:1fr} .avatar{width:88px;height:88px;flex:0 0 88px} }
+    .animated-btn{
+    display:inline-flex;                
+    align-items:center;
+    justify-content:center;
+    min-width:140px;                    
+    height:48px;                         
+    padding:0 12px;
+    background:transparent;
+    color:var(--accent);
+    border:1px solid rgba(191,160,106,0.12);
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:600;
+    font-family:inherit;
+    transition:
+        transform .13s ease,
+        background .13s ease,
+        box-shadow .13s ease;
+}
 
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-      letter-spacing: 2px;
-    }
 
-    a.button {
-      background: #bfa06a;
-      color: #0a0a0a;
-      padding: 0.9rem 1.7rem;
-      border-radius: 0.4rem;
-      text-decoration: none;
-      font-weight: bold;
-      display: inline-block;
-      margin: 1rem 0;
-      transition: 0.2s;
-    }
+.animated-btn:hover{
+    background:rgba(191,160,106,0.08);
+}
 
-    a.button:hover {
-      background: #fff2a8;
-      transform: scale(1.05);
-    }
 
-    textarea {
-      width: 80%;
-      max-width: 550px;
-      padding: 0.7rem;
-      margin: 0.5rem 0;
-      border: 2px solid #bfa06a;
-      background: #111;
-      color: #bfa06a;
-      border-radius: 0.4rem;
-      font-size: 1rem;
-    }
+.animated-btn:active{
+    transform:scale(0.92);
+    box-shadow:0 0 12px rgba(191,160,106,0.4);
+}
 
-    #historySection {
-      max-width: 550px;
-      margin: 2rem auto;
-      text-align: left;
-    }
 
-    #history {
-      padding-left: 1.5rem;
-    }
-
-    #history li {
-      margin: 0.5rem 0;
-      overflow-wrap: anywhere;
-    }
-
-    #history button {
-      background: #111;
-      color: #bfa06a;
-      border: 1px solid #bfa06a;
-      border-radius: 0.3rem;
-      padding: 0.5rem;
-      text-align: left;
-      cursor: pointer;
-      width: 100%;
-    }
-
-    #history button:hover {
-      background: #222;
-    }
-
-    #result img {
-      max-width: 90%;
-      margin-top: 1.5rem;
-      border: 4px solid #bfa06a;
-      border-radius: 0.5rem;
-      box-shadow: 0 0 20px #ffd70055;
-    }
-
-    #loading {
-      display: none;
-      margin-top: 1rem;
-      font-size: 1.2rem;
-      opacity: 0.8;
-    }
+.animated-btn.loading{
+    pointer-events:none;
+    opacity:0.7;
+}
   </style>
 </head>
 <body>
-  <h1>RatGen</h1>
 
-  <a id="authBtn" class="button" href="#">
-    Connect Your Pollinations Account
-  </a>
 
-  <div id="promptSection" style="display: none;">
-    <textarea
-      id="prompt"
-      rows="2"
-      placeholder="Describe the image you want…"
-    ></textarea>
-    <br>
-    <a id="generateBtn" class="button" href="#">Generate Image</a>
-    <div id="loading">Generating… please wait</div>
+  <div class="wrap">
+    <header>
+    
+      <div class="title">
+        <h1 id="profileName">Rat Gen</h1>
+        <p class="muted">Simple rock bottom cost ai site</p>
+      </div>
+      
+
+    </header>
+
+    <main>
+      <section>
+        <div class="card section">
+          <h2 style="margin:0 0 8px;color:var(--accent)">About Rat gen</h2>
+          <p class="bio" id="bioText"><div <div style="font-size:0.9rem;color:var(--muted)">Using the cheapest models available we deliver rock bottom cost.</p>
+            <p>Because of this quality may suffer</p>
+          </div>
+
+        <div class="card section">
+          <h2 style="margin:0 0 8px;color:var(--accent)">Diffrent Generators</h2>
+          <button class="animated-btn" 
+        onclick="location.href='https://justarandomrat3.github.io/RatGen2/image'">
+    image generator
+</button></p>
+          </div>
+      </section>
+
+      <aside>
+      <!-- Insert this card into the <section> area (for example, after the "Socials :3" card) -->
+<div class="card section">
+  <h2 style="margin:0 0 8px;color:var(--accent)">Other stuff</h2>
+  <p style="color:var(--muted);margin:6px 0">Check out other stuff I've built:</p>
+
+<button class="animated-btn"
+        onclick="location.href='https://canadianrat.neocities.org/csharp'">
+    Click Me :)
+</button>
+<button class="animated-btn" onclick="location.href='https://example.com'">
+    My Discord
+</button>
+<button class="animated-btn" onclick="location.href='https://youtube.com/@CanadianRat'">
+    YouTube
+</button>
+
+</div>
+        <div class="card section">
+          <h3 style="margin:0 0 8px;color:var(--accent)">Rats of the week</h3>
+          <ul class="fav-list" id="favList">
+            <li>@wifi <span style="color:var(--muted)">— from discord</span></li>
+            <li>@CoalSpider <span style="color:var(--muted)">— from discord</span></li>
+          </ul>
+        </div>
+      </aside>
+    </main>
+
+    <footer>
+      <small style="color:var(--muted)">Built by @canadianrat on yt</small>
+    </footer>
   </div>
-
-  <div id="historySection">
-    <h2>Recent prompts</h2>
-    <ul id="history"></ul>
-  </div>
-
-  <div id="result"></div>
-
-  <script>
-    const CLIENT_ID = "pk_3nQsoQyCywMClyjt";
-    const REDIRECT_URI = "https://justarandomrat3.github.io/RatGen2/";
-
-    const authUrl = new URL("https://enter.pollinations.ai/authorize");
-    authUrl.searchParams.set("redirect_url", REDIRECT_URI);
-    authUrl.searchParams.set("client_id", CLIENT_ID);
-
-    const authBtn = document.getElementById("authBtn");
-    const promptSection = document.getElementById("promptSection");
-    const generateBtn = document.getElementById("generateBtn");
-    const loading = document.getElementById("loading");
-    const result = document.getElementById("result");
-    const historyList = document.getElementById("history");
-
-    const HISTORY_KEY = "ratgen-prompt-history";
-    const MAX_HISTORY = 20;
-
-    function getHistory() {
-      try {
-        return JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]");
-      } catch {
-        return [];
-      }
-    }
-
-    function renderHistory() {
-      historyList.replaceChildren();
-
-      for (const promptText of getHistory()) {
-        const item = document.createElement("li");
-        const button = document.createElement("button");
-
-        button.type = "button";
-        button.textContent = promptText;
-        button.addEventListener("click", () => {
-          document.getElementById("prompt").value = promptText;
-        });
-
-        item.appendChild(button);
-        historyList.appendChild(item);
-      }
-    }
-
-    function savePrompt(promptText) {
-      const history = getHistory().filter(item => item !== promptText);
-      history.unshift(promptText);
-
-      localStorage.setItem(
-        HISTORY_KEY,
-        JSON.stringify(history.slice(0, MAX_HISTORY))
-      );
-
-      renderHistory();
-    }
-
-    renderHistory();
-
-    authBtn.href = authUrl.toString();
-
-    // Read the API key returned in the URL fragment after authorization.
-    const params = new URLSearchParams(window.location.hash.slice(1));
-    const userKey = params.get("api_key");
-
-    console.log("API key received:", Boolean(userKey));
-    console.log("Key length:", userKey?.length ?? 0);
-
-    if (userKey) {
-      authBtn.style.display = "none";
-      promptSection.style.display = "block";
-
-      history.replaceState(
-        null,
-        "",
-        window.location.pathname + window.location.search
-      );
-    }
-
-    generateBtn.addEventListener("click", async (event) => {
-      event.preventDefault();
-
-      if (!userKey) {
-        alert("Connect your Pollinations account first.");
-        return;
-      }
-
-      const prompt = document.getElementById("prompt").value.trim();
-
-      if (!prompt) {
-        alert("Please enter a description.");
-        return;
-      }
-
-      savePrompt(prompt);
-      loading.style.display = "block";
-      result.replaceChildren();
-
-      try {
-        const imageUrl =
-          "https://gen.pollinations.ai/image/" +
-          encodeURIComponent(prompt) +
-          "?model=" +
-          encodeURIComponent("lykon/dreamshaper-8-lcm");
-
-        const response = await fetch(imageUrl, {
-          headers: {
-            Authorization: `Bearer ${userKey}`
-          }
-        });
-
-        if (!response.ok) {
-          const details = await response.text();
-          console.error("Pollinations error:", response.status, details);
-          throw new Error(`Pollinations returned HTTP ${response.status}`);
-        }
-
-        const imageBlob = await response.blob();
-        const imageObjectUrl = URL.createObjectURL(imageBlob);
-        const image = document.createElement("img");
-
-        image.alt = "Generated image";
-        image.src = imageObjectUrl;
-        result.replaceChildren(image);
-      } catch (error) {
-        console.error(error);
-        alert("Image generation failed. Check the browser console for details.");
-      } finally {
-        loading.style.display = "none";
-      }
-    });
-  </script>
 </body>
 </html>
